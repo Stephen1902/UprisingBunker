@@ -26,6 +26,7 @@ AUB_AICharacterBase::AUB_AICharacterBase()
 	SafetyComponent = CreateDefaultSubobject<USafetyComponent>(TEXT("Safety Component"));
 	EnvironmentComponent = CreateDefaultSubobject<UEnvironmentComponent>(TEXT("Environment Component"));
 
+	
 }
 
 // Called when the game starts or when spawned
@@ -47,6 +48,12 @@ void AUB_AICharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInput
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AUB_AICharacterBase::SetCurrentTask(const ECharacterTask NewTaskIn)
+{
+	CharacterTask = NewTaskIn;
+	OnTaskChanged.Broadcast(CharacterTask);
 }
 
 void AUB_AICharacterBase::SetCurrentStatus(const ECharacterStatus NewStatusIn)

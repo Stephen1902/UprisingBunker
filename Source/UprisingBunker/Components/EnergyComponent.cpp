@@ -37,7 +37,7 @@ void UEnergyComponent::AlterCurrentEnergy(const float EnergyIn)
 	EnergyNeeds.CurrentEnergy += FMath::Clamp(EnergyNeeds.CurrentEnergy, 0.f, EnergyNeeds.MaxEnergy);
 
 	// Check that the character isn't already sleeping
-	if (CurrentCharacterStatus != ECharacterStatus::ECS_Resting)
+	if (CurrentCharacterTask != ECharacterTask::ECT_Resting)
 	{
 
 	}
@@ -47,7 +47,7 @@ void UEnergyComponent::AlterCurrentEnergy(const float EnergyIn)
 		if (EnergyNeeds.CurrentEnergy == EnergyNeeds.MaxEnergy)
 		{
 			// Energy is full, wake the character
-			CompOwner->SetCurrentStatus(ECharacterStatus::ECS_Normal);
+			CompOwner->SetCurrentTask(ECharacterTask::ECT_Normal);
 
 			// TODO random waking rather than the instant energy is full
 		}

@@ -2,6 +2,7 @@
 
 
 #include "BladderComponent.h"
+#include "UprisingBunker/AI/UB_AICharacterBase.h"
 
 // Sets default values for this component's properties
 UBladderComponent::UBladderComponent()
@@ -30,5 +31,12 @@ void UBladderComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UBladderComponent::AlterCurrentBladder(const float BladderIn)
+{
+	BladderNeeds.CurrentBladder += FMath::Clamp(BladderNeeds.CurrentBladder, 0.f, BladderNeeds.MaxBladder);
+
+
 }
 

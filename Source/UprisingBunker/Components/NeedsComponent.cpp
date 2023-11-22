@@ -11,10 +11,11 @@ UNeedsComponent::UNeedsComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	CompOwner = nullptr;
-	CurrentCharacterStatus = ECharacterStatus::ECS_Normal;
+	CurrentCharacterTask = ECharacterTask::ECT_Normal;
 	RoomSafety = 50.f;
 	RoomEnvironment = 50.f;
 	RoomHealth = 100.f;
+	
 }
 
 
@@ -27,7 +28,7 @@ void UNeedsComponent::BeginPlay()
 
 	if (CompOwner)
 	{
-		CompOwner->OnStatusChanged.AddDynamic(this, &UNeedsComponent::CharacterStatusChanged);
+		CompOwner->OnTaskChanged.AddDynamic(this, &UNeedsComponent::CharacterTaskChanged);
 		CompOwner->OnRoomEntered.AddDynamic(this, &UNeedsComponent::CharacterNewRoom);
 	}
 	else
@@ -45,10 +46,10 @@ void UNeedsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-void UNeedsComponent::CharacterStatusChanged(ECharacterStatus NewStatus)
+void UNeedsComponent::CharacterTaskChanged(ECharacterTask NewTask)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Status changed"));
-	CurrentCharacterStatus = NewStatus;
+	CurrentCharacterTask = NewTask;
 }
 
 void UNeedsComponent::CharacterNewRoom(const float Safety, const float Environment, const float Health)

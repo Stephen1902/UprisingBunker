@@ -91,43 +91,6 @@ USTRUCT(BlueprintType) struct FNeedsThirst
 
 };
 
-USTRUCT(BlueprintType) struct FNeedsBladder
-{
-	GENERATED_BODY();
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder")
-	FText BladderText;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder")
-	float MaxBladder;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder")
-	float CurrentBladder;
-
-	// Bladder drain per second when this character is not doing anything else
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder")
-	float BladderDrainNormal;
-
-	// Bladder drain per second when this character is sleeping
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder")
-	float BladderDrainSleeping;
-
-	// Value at which the character will go and try to fix the problem
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder", meta = (ClampMin = 1.f))
-	float BladderFixValue;
-
-	// Default Values
-	FNeedsBladder()
-	{
-		BladderText = FText::FromString("Bladder");
-		MaxBladder = 100.f;
-		CurrentBladder = MaxBladder;
-		BladderDrainNormal = 0.01f;
-		BladderDrainSleeping = 0.015f;
-		BladderFixValue = 20.f;
-	}
-};
-
 USTRUCT(BlueprintType) struct FNeedsHygiene
 {
 	GENERATED_BODY();
@@ -292,9 +255,6 @@ protected:
 	FNeedsThirst ThirstNeeds;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Structs|Needs")
-	FNeedsBladder BladderNeeds;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Structs|Needs")
 	FNeedsHygiene HygieneNeeds;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Structs|Needs")
@@ -315,8 +275,8 @@ protected:
 	class AUB_AICharacterBase* CompOwner;
 
 	UFUNCTION()
-	void CharacterStatusChanged(ECharacterStatus NewStatus);
-	ECharacterStatus CurrentCharacterStatus;
+	void CharacterTaskChanged(ECharacterTask NewTask);
+	ECharacterTask CurrentCharacterTask;
 
 	UFUNCTION()
 	void CharacterNewRoom(float Safety, float Environment, float Health);
