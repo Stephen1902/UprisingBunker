@@ -72,3 +72,8 @@ void AUB_AICharacterBase::RoomExited()
 	OnRoomEntered.Broadcast(0.f, 0.f, 0.f);
 }
 
+float AUB_AICharacterBase::GetCurrentThirstLevel() const
+{
+	return ThirstComponent->GetThirstLevel();
+}
+

@@ -30,13 +30,41 @@ void UBladderComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	if (CurrentCharacterStatus != ECharacterStatus::ECS_Dead)
+	{
+		CalculateTickBladderChange(DeltaTime);
+	}
 }
 
 void UBladderComponent::AlterCurrentBladder(const float BladderIn)
 {
 	BladderNeeds.CurrentBladder += FMath::Clamp(BladderNeeds.CurrentBladder, 0.f, BladderNeeds.MaxBladder);
+}
 
+void UBladderComponent::CalculateTickBladderChange(float DeltaTime)
+{
+	float ChangeThisTick;
 
+	// Get the current bladder drain per second, depending on if the character is sleeping or not
+	if (CurrentCharacterTask == ECharacterTask::ECT_Sleeping)
+	{
+		ChangeThisTick = BladderNeeds.BladderDrainSleeping;
+	}
+	else
+	{
+		ChangeThisTick = BladderNeeds.BladderDrainNormal;
+	}
+
+	// Check if the character has a high enough water level to trigger a penalty 
+	if (CompOwner->GetCurrentThirstLevel() > BladderNeeds.WaterPenaltyThreshold)
+	{
+		ChangeThisTick *= (1.0f + BladderNeeds.WaterPenaltyMultiplier);
+	}
+
+	// Multiply by DeltaTime to keep it frame rate independent
+	ChangeThisTick *= DeltaTime;
+
+	// Change the bladder level calculated
+	AlterCurrentBladder(ChangeThisTick);
 }
 

@@ -12,6 +12,7 @@ enum class ECharacterTask : uint8
 	ECT_Normal		UMETA(DisplayName = "Normal"),
 	ECT_Working		UMETA(DisplayName = "Working"),
 	ECT_Resting		UMETA(DisplayName = "Resting"),
+	ECT_Sleeping	UMETA(DisplayName = "Sleeping"),
 	ECT_Consuming	UMETA(DisplayName = "Consuming"),
 	ECT_Toilet		UMETA(DisplayName = "Toilet"),
 	ECT_Fighting	UMETA(DisplayName = "Fighting"),
@@ -163,6 +164,10 @@ public:
 
 	void RoomEntered(FText RoomName, FText RoomDescription, float Safety, float Environment, float Health, bool CharWorksHere);
 	void RoomExited();
+	
+	ECharacterStatus GetCharacterStatus() const { return CharacterStatus; }
+
+	float GetCurrentThirstLevel() const;
 private:
 	// Current task of this character
 	UPROPERTY()

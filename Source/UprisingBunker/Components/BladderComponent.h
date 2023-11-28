@@ -36,7 +36,7 @@ USTRUCT(BlueprintType) struct FNeedsBladder
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder")
 	float WaterPenaltyThreshold;
 
-	// Multiplier for the water leven penalty
+	// Multiplier for the water level penalty
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Needs|Bladder", meta=(EditCondition="WaterPenaltyThreshold<100.f"));
 	float WaterPenaltyMultiplier;
 
@@ -70,8 +70,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Structs|Needs")
 	FNeedsBladder BladderNeeds;
-
-	
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -82,4 +80,7 @@ public:
 
 	// Setters
 	void AlterCurrentBladder(const float BladderIn);
+
+private:
+	void CalculateTickBladderChange(float DeltaTime);
 };
