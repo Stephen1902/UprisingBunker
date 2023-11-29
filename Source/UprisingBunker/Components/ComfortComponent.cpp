@@ -32,3 +32,11 @@ void UComfortComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	// ...
 }
 
+void UComfortComponent::AlterComfort(const float AlterAmount)
+{
+	if (!FMath::IsNearlyZero(AlterAmount))
+	{
+		ComfortNeeds.CurrentComfort = FMath::Clamp(ComfortNeeds.CurrentComfort + AlterAmount, 0.f, ComfortNeeds.MaxComfort);
+	}
+}
+

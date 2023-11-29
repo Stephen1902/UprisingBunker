@@ -32,3 +32,11 @@ void USafetyComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+void USafetyComponent::AlterSafety(const float AlterAmount)
+{
+	if (!FMath::IsNearlyZero(AlterAmount))
+	{
+		SafetyNeeds.CurrentSafety = FMath::Clamp(SafetyNeeds.CurrentSafety + AlterAmount, 0.f, SafetyNeeds.MaxSafety);
+	}
+}
+

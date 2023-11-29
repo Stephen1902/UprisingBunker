@@ -32,3 +32,11 @@ void UThirstComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+void UThirstComponent::AlterThirst(const float AlterAmount)
+{
+	if (!FMath::IsNearlyZero(AlterAmount))
+	{
+		ThirstNeeds.CurrentThirst = FMath::Clamp(ThirstNeeds.CurrentThirst + AlterAmount, 0.f, ThirstNeeds.MaxThirst);
+	}
+}
+

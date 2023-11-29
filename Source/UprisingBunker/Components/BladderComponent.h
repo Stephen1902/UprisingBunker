@@ -79,7 +79,7 @@ public:
 	float GetCurrentBladder() const { return BladderNeeds.CurrentBladder; }
 
 	// Setters
-	void AlterCurrentBladder(const float BladderIn);
+	void AlterCurrentBladder(const float AlterAmount);
 
 private:
 	void CalculateTickBladderChange(float DeltaTime);

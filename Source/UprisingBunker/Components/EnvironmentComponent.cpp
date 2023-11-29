@@ -32,3 +32,11 @@ void UEnvironmentComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	// ...
 }
 
+void UEnvironmentComponent::AlterEnvironment(const float AlterAmount)
+{
+	if (!FMath::IsNearlyZero(AlterAmount))
+	{
+		EnvironmentNeeds.CurrentEnvironment = FMath::Clamp(EnvironmentNeeds.CurrentEnvironment + AlterAmount, 0.f, EnvironmentNeeds.MaxEnvironment);
+	}
+}
+

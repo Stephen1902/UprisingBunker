@@ -75,6 +75,6 @@ public:
 	float GetCurrentEnergy() const { return EnergyNeeds.CurrentEnergy; }
 
 	// Setters
-	void AlterCurrentEnergy(const float EnergyIn);
+	void AlterEnergy(const float AlterAmount);
 		
 };

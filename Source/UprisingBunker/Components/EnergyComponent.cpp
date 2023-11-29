@@ -32,25 +32,27 @@ void UEnergyComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UEnergyComponent::AlterCurrentEnergy(const float EnergyIn)
+void UEnergyComponent::AlterEnergy(const float AlterAmount)
 {
-	EnergyNeeds.CurrentEnergy += FMath::Clamp(EnergyNeeds.CurrentEnergy, 0.f, EnergyNeeds.MaxEnergy);
-
-	// Check that the character isn't already sleeping
-	if (CurrentCharacterTask != ECharacterTask::ECT_Resting)
+	if (!FMath::IsNearlyZero(AlterAmount))
 	{
+		EnergyNeeds.CurrentEnergy = FMath::Clamp(EnergyNeeds.CurrentEnergy + AlterAmount, 0.f, EnergyNeeds.MaxEnergy);
 
-	}
-	else
-	{
-		// The character is sleeping, check if their energy has reached maximum level
-		if (EnergyNeeds.CurrentEnergy == EnergyNeeds.MaxEnergy)
+		// Check that the character isn't already sleeping
+		if (CurrentCharacterTask != ECharacterTask::ECT_Sleeping)
 		{
-			// Energy is full, wake the character
-			CompOwner->SetCurrentTask(ECharacterTask::ECT_Normal);
 
-			// TODO random waking rather than the instant energy is full
+		}
+		else
+		{
+			// The character is sleeping, check if their energy has reached maximum level
+			if (EnergyNeeds.CurrentEnergy == EnergyNeeds.MaxEnergy)
+			{
+				// Energy is full, wake the character
+				CompOwner->SetCurrentTask(ECharacterTask::ECT_Normal);
+
+				// TODO random waking rather than the instant energy is full
+			}
 		}
 	}
-
 }

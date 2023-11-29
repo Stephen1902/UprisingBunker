@@ -69,5 +69,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	float GetThirstLevel() const { return ThirstNeeds.CurrentThirst; }		
+	// Getters
+	FText GetThirstText() const { return ThirstNeeds.ThirstText; }
+	float GetThirstLevel() const { return ThirstNeeds.CurrentThirst; }
+
+	// Setters
+	void AlterThirst(const float AlterAmount);
 };

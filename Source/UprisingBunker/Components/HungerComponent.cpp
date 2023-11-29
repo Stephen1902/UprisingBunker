@@ -32,3 +32,11 @@ void UHungerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+void UHungerComponent::AlterHunger(const float AlterAmount)
+{
+	if (!FMath::IsNearlyZero(AlterAmount))
+	{
+		HungerNeeds.CurrentHunger = FMath::Clamp(HungerNeeds.CurrentHunger + AlterAmount, 0.f, HungerNeeds.MaxHunger);
+	}
+}
+

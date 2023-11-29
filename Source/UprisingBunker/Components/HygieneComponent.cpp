@@ -32,3 +32,11 @@ void UHygieneComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	// ...
 }
 
+void UHygieneComponent::AlterHygiene(const float AlterAmount)
+{
+	if (!FMath::IsNearlyZero(AlterAmount))
+	{
+		HygieneNeeds.CurrentHygiene = FMath::Clamp(HygieneNeeds.CurrentHygiene + AlterAmount, 0.f, HygieneNeeds.MaxHygiene);
+	}
+}
+
