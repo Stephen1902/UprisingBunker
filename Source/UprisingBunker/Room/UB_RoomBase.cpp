@@ -22,13 +22,13 @@ AUB_RoomBase::AUB_RoomBase()
 	BaseLightComp = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light Comp"));
 	BaseLightComp->SetupAttachment(BaseMeshComp);
 
-	RoomStatusCurrent.SafetyBase = 50.f;
-	RoomStatusCurrent.SafetyMax = 100.f;
-	RoomStatusCurrent.EnvironmentBase = 50.f;
-	RoomStatusCurrent.EnvironmentMax = 100.f;
-	RoomStatusCurrent.HealthBase = 100.f;
-	RoomStatusCurrent.HealthMax = 100.f;
-	RoomStatusCurrent.HealthDropPerSecond = 0.f;
+	RoomStatusStruct.SafetyBase = 50.f;
+	RoomStatusStruct.SafetyMax = 100.f;
+	RoomStatusStruct.EnvironmentBase = 50.f;
+	RoomStatusStruct.EnvironmentMax = 100.f;
+	RoomStatusStruct.HealthBase = 100.f;
+	RoomStatusStruct.HealthMax = 100.f;
+	RoomStatusStruct.HealthDropPerSecond = 0.f;
 	SafetyCurrent = 0.f;
 	EnvironmentCurrent = 0.f;
 	HealthCurrent = 0.f;	
@@ -61,11 +61,11 @@ void AUB_RoomBase::PostEditChangeProperty(struct FPropertyChangedEvent& Property
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
-	if (RoomStatusCurrent.SafetyBase > SafetyCurrent) { SafetyCurrent = RoomStatusCurrent.SafetyBase; }
-	if (RoomStatusCurrent.SafetyBase > RoomStatusCurrent.SafetyMax) { RoomStatusCurrent.SafetyMax = RoomStatusCurrent.SafetyBase; }
+	if (RoomStatusStruct.SafetyBase > SafetyCurrent) { SafetyCurrent = RoomStatusStruct.SafetyBase; }
+	if (RoomStatusStruct.SafetyBase > RoomStatusStruct.SafetyMax) { RoomStatusStruct.SafetyMax = RoomStatusStruct.SafetyBase; }
 
-	if (RoomStatusCurrent.EnvironmentBase > EnvironmentCurrent) { EnvironmentCurrent = RoomStatusCurrent.EnvironmentBase; }
-	if (RoomStatusCurrent.EnvironmentBase > RoomStatusCurrent.EnvironmentMax) { RoomStatusCurrent.EnvironmentMax = RoomStatusCurrent.EnvironmentBase; }
+	if (RoomStatusStruct.EnvironmentBase > EnvironmentCurrent) { EnvironmentCurrent = RoomStatusStruct.EnvironmentBase; }
+	if (RoomStatusStruct.EnvironmentBase > RoomStatusStruct.EnvironmentMax) { RoomStatusStruct.EnvironmentMax = RoomStatusStruct.EnvironmentBase; }
 }
 #endif
 
@@ -83,9 +83,9 @@ void AUB_RoomBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (RoomStatusCurrent.HealthDropPerSecond > 0.f)
+	if (RoomStatusStruct.HealthDropPerSecond > 0.f)
 	{
-		AlterHealth(-RoomStatusCurrent.HealthDropPerSecond * DeltaTime);
+		AlterHealth(-RoomStatusStruct.HealthDropPerSecond * DeltaTime);
 	}
 
 }
@@ -94,39 +94,39 @@ void AUB_RoomBase::AlterSafety(float AmountToAdjust)
 {
 	if (AmountToAdjust != 0.f)
 	{
-		SafetyCurrent += FMath::Clamp(SafetyCurrent, 0.f, RoomStatusCurrent.SafetyMax);
+		SafetyCurrent += FMath::Clamp(SafetyCurrent, 0.f, RoomStatusStruct.SafetyMax);
 	}
 }
 
 float AUB_RoomBase::GetSafetyAsPercentage()
 {
-	return 1.0f - ((RoomStatusCurrent.SafetyMax - SafetyCurrent) / RoomStatusCurrent.SafetyMax);
+	return 1.0f - ((RoomStatusStruct.SafetyMax - SafetyCurrent) / RoomStatusStruct.SafetyMax);
 }
 
 void AUB_RoomBase::AlterEnvironment(float AmountToAdjust)
 {
 	if (AmountToAdjust != 0.f)
 	{
-		EnvironmentCurrent += FMath::Clamp(EnvironmentCurrent, 0.f, RoomStatusCurrent.EnvironmentMax);
+		EnvironmentCurrent += FMath::Clamp(EnvironmentCurrent, 0.f, RoomStatusStruct.EnvironmentMax);
 	}
 }
 
 float AUB_RoomBase::GetEnvironmentAsPercentage()
 {
-	return 1.0f - ((RoomStatusCurrent.EnvironmentMax - EnvironmentCurrent) / RoomStatusCurrent.EnvironmentMax);
+	return 1.0f - ((RoomStatusStruct.EnvironmentMax - EnvironmentCurrent) / RoomStatusStruct.EnvironmentMax);
 }
 
 void AUB_RoomBase::AlterHealth(float AmountToAdjust)
 {
 	if (AmountToAdjust != 0.f)
 	{
-		HealthCurrent += FMath::Clamp(HealthCurrent, 0.f, RoomStatusCurrent.HealthMax);
+		HealthCurrent += FMath::Clamp(HealthCurrent, 0.f, RoomStatusStruct.HealthMax);
 	}
 }
 
 float AUB_RoomBase::GetHealthAsPercentage()
 {
-	return 1.0f - ((RoomStatusCurrent.HealthMax - HealthCurrent) / RoomStatusCurrent.HealthMax);
+	return 1.0f - ((RoomStatusStruct.HealthMax - HealthCurrent) / RoomStatusStruct.HealthMax);
 }
 
 void AUB_RoomBase::ChangeRoomStatus(const ERoomStatus NewRoomStatus)
@@ -137,14 +137,14 @@ void AUB_RoomBase::ChangeRoomStatus(const ERoomStatus NewRoomStatus)
 		// If found, update variables to match
 		if (RS.RoomStatus == NewRoomStatus)
 		{
-			RoomStatusCurrent.RoomStatus = NewRoomStatus;
-			RoomStatusCurrent.EnvironmentBase = RS.EnvironmentBase;
-			RoomStatusCurrent.EnvironmentMax = RS.EnvironmentMax;
-			RoomStatusCurrent.HealthBase = RS.HealthBase;
-			RoomStatusCurrent.HealthMax = RS.HealthMax;
-			RoomStatusCurrent.SafetyBase = RS.SafetyBase;
-			RoomStatusCurrent.SafetyMax = RS.SafetyMax;
-			RoomStatusCurrent.HealthDropPerSecond = RS.HealthDropPerSecond;
+			RoomStatusStruct.RoomStatus = NewRoomStatus;
+			RoomStatusStruct.EnvironmentBase = RS.EnvironmentBase;
+			RoomStatusStruct.EnvironmentMax = RS.EnvironmentMax;
+			RoomStatusStruct.HealthBase = RS.HealthBase;
+			RoomStatusStruct.HealthMax = RS.HealthMax;
+			RoomStatusStruct.SafetyBase = RS.SafetyBase;
+			RoomStatusStruct.SafetyMax = RS.SafetyMax;
+			RoomStatusStruct.HealthDropPerSecond = RS.HealthDropPerSecond;
 		}
 	}
 }

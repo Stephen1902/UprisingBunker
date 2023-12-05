@@ -21,35 +21,35 @@ struct FRoomStatus
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	ERoomStatus RoomStatus;
 
 	// The base safety rating of this room when spawned
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float SafetyBase;
 
 	// The maximum safety rating of this room
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float SafetyMax;
 
 	// The base environment rating of this room when spawned
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float EnvironmentBase;
 
 	// The maximum environment rating for this room
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float EnvironmentMax;
 
 	// The base health level of this room when spawned
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float HealthBase;
 
 	// The maximum health level of this room
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float HealthMax;
 
 	// Room health degradation per second
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Struct")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Status")
 	float HealthDropPerSecond;
 };
 
@@ -115,7 +115,7 @@ public:
 	float GetHealthAsPercentage();
 
 	UFUNCTION(BlueprintCallable, Category="Rooms")
-	ERoomStatus GetRoomStatus() const { return RoomStatus; }
+	ERoomStatus GetRoomStatus() const { return RoomStatusEnum; }
 
 	UFUNCTION(BlueprintCallable, Category="Rooms")
 	void ChangeRoomStatus(const ERoomStatus NewRoomStatus );
@@ -137,10 +137,10 @@ private:
 	TArray<AUB_AICharacterBase*> AIWorksHere;
 
 	UPROPERTY()
-	ERoomStatus RoomStatus;
+	ERoomStatus RoomStatusEnum;
 
 	UPROPERTY()
-	FRoomStatus RoomStatusCurrent;
+	FRoomStatus RoomStatusStruct;
 	
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;

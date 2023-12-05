@@ -13,5 +13,4 @@ UCLASS()
 class UPRISINGBUNKER_API AUprisingBunkerGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
