@@ -26,7 +26,7 @@ AUB_AICharacterBase::AUB_AICharacterBase()
 	SafetyComponent = CreateDefaultSubobject<USafetyComponent>(TEXT("Safety Component"));
 	EnvironmentComponent = CreateDefaultSubobject<UEnvironmentComponent>(TEXT("Environment Component"));
 
-	
+	CurrentHealth = CharacterInfo.CharacterMaxHealth;	
 }
 
 // Called when the game starts or when spawned

@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "UB_AICharacterBase.generated.h"
 
+enum class ENeeds;
+
 UENUM(Blueprintable) 
 enum class ECharacterTask : uint8
 {
@@ -87,6 +89,9 @@ struct FCharacterInfo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Set Up")
 	ECharacterMood CharacterMood;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Set Up")
+	float CharacterMaxHealth;
+	
 	FCharacterInfo()
 	{
 		Forename = FText::FromString("John");
@@ -95,6 +100,7 @@ struct FCharacterInfo
 		DOB = FDateTime(1976, 12, 5);
 		MaritalStatus = EMaritalStatus::EMS_Single;
 		CharacterMood = ECharacterMood::ECM_Neither;
+		CharacterMaxHealth = 100.f;
 	}
 };
 
@@ -114,6 +120,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Needs")
 	class UEnergyComponent* EnergyComponent;
 
@@ -138,12 +145,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Needs")
 	class UEnvironmentComponent* EnvironmentComponent;
 
+	// Information about this character
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Set Up")
+	FCharacterInfo CharacterInfo;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;	
 
 	// Called when the task of this character changes
 	UPROPERTY(BlueprintAssignable)
@@ -176,4 +187,10 @@ private:
 	// Current status of this character
 	UPROPERTY()
 	ECharacterStatus CharacterStatus;
+
+	// Need that requires sorting
+	UPROPERTY()
+	ENeeds NeedToSort;
+
+	float CurrentHealth;
 };

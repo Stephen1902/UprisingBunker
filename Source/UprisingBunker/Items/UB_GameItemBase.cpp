@@ -16,6 +16,9 @@ AUB_GameItemBase::AUB_GameItemBase()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Comp"));
 	MeshComp->SetupAttachment(RootComp);
 
+	ItemName = FText::FromString("Default Name");
+	ItemDescription = FText::FromString("Default Description");
+	ItemCost = 20.f;
 	bAllowMultipleChars = false;
 }
 

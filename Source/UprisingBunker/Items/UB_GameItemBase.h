@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "UprisingBunker/Components/NeedsComponent.h"
 #include "UB_GameItemBase.generated.h"
+
+enum class ENeeds;
 
 USTRUCT(BlueprintType)
 struct FObjectNeeds
@@ -41,6 +42,15 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
+	FText ItemName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
+	FText ItemDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
+	float ItemCost;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
 	TArray<FObjectNeeds> ObjectNeeds;
