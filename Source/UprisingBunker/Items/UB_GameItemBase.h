@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "UB_GameItemBase.generated.h"
 
-enum class ENeeds;
+enum class ECharacterNeeds : uint8;
 
 USTRUCT(BlueprintType)
 struct FObjectNeeds
@@ -15,7 +15,7 @@ struct FObjectNeeds
 
 	// The need being amended by this actor
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
-	ENeeds NeedToAmend;
+	ECharacterNeeds NeedToAmend;
 
 	// The maximum value this actor can amend
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")

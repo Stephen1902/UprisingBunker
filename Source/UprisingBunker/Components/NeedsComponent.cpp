@@ -1,6 +1,7 @@
 // Copyright 2023 DME Games
 
 #include "NeedsComponent.h"
+#include "UprisingBunker/AI/UB_AICharacterBase.h"
 
 // Sets default values for this component's properties
 UNeedsComponent::UNeedsComponent()
@@ -12,6 +13,7 @@ UNeedsComponent::UNeedsComponent()
 	CompOwner = nullptr;
 	CurrentCharacterTask = ECharacterTask::ECT_Normal;
 	CurrentCharacterStatus = ECharacterStatus::ECS_Healthy;
+	CurrentCharacterNeed = ECharacterNeeds::EN_None;
 	RoomSafety = 50.f;
 	RoomEnvironment = 50.f;
 	RoomHealth = 100.f;
@@ -30,12 +32,13 @@ void UNeedsComponent::BeginPlay()
 	{
 		CompOwner->OnTaskChanged.AddDynamic(this, &UNeedsComponent::CharacterTaskChanged);
 		CompOwner->OnStatusChanged.AddDynamic(this, &UNeedsComponent::CharacterStatusChanged);
+		CompOwner->OnNeedChanged.AddDynamic(this, &UNeedsComponent::CharacterNeedsChanged);
 		CompOwner->OnRoomEntered.AddDynamic(this, &UNeedsComponent::CharacterNewRoom);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Failed to get owner on this component"));
-	}	
+	}
 }
 
 
@@ -57,6 +60,12 @@ void UNeedsComponent::CharacterStatusChanged(ECharacterStatus NewStatus)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Status Changed"));
 	CurrentCharacterStatus = NewStatus;
+}
+
+void UNeedsComponent::CharacterNeedsChanged(ECharacterNeeds NewNeed)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Need Changed"));
+	CurrentCharacterNeed = NewNeed;
 }
 
 void UNeedsComponent::CharacterNewRoom(const float Safety, const float Environment, const float Health)

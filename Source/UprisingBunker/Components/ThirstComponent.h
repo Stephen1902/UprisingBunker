@@ -71,8 +71,11 @@ public:
 
 	// Getters
 	FText GetThirstText() const { return ThirstNeeds.ThirstText; }
-	float GetThirstLevel() const { return ThirstNeeds.CurrentThirst; }
+	float GetCurrentThirst() const { return ThirstNeeds.CurrentThirst; }
 
 	// Setters
 	void AlterThirst(const float AlterAmount);
+
+private:
+	void AlterThirstThisTick(float DeltaTime);
 };

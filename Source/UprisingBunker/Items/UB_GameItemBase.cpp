@@ -3,6 +3,7 @@
 
 #include "UB_GameItemBase.h"
 #include "Components/BoxComponent.h"
+#include "UprisingBunker/AI/UB_AICharacterBase.h"
 
 // Sets default values
 AUB_GameItemBase::AUB_GameItemBase()

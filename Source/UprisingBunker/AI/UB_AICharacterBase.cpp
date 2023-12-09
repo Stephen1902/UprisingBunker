@@ -26,7 +26,8 @@ AUB_AICharacterBase::AUB_AICharacterBase()
 	SafetyComponent = CreateDefaultSubobject<USafetyComponent>(TEXT("Safety Component"));
 	EnvironmentComponent = CreateDefaultSubobject<UEnvironmentComponent>(TEXT("Environment Component"));
 
-	CurrentHealth = CharacterInfo.CharacterMaxHealth;	
+	CurrentHealth = CharacterInfo.CharacterMaxHealth;
+	
 }
 
 // Called when the game starts or when spawned
@@ -62,6 +63,12 @@ void AUB_AICharacterBase::SetCurrentStatus(const ECharacterStatus NewStatusIn)
 	OnStatusChanged.Broadcast(CharacterStatus);
 }
 
+void AUB_AICharacterBase::SetCurrentNeed(const ECharacterNeeds NewNeedIn)
+{
+	CharacterNeeds = NewNeedIn;
+	OnNeedChanged.Broadcast(CharacterNeeds);
+}
+
 void AUB_AICharacterBase::RoomEntered(FText RoomName, FText RoomDescription, float Safety, float Environment, float Health, bool CharWorksHere)
 {
 	OnRoomEntered.Broadcast(Safety, Environment, Health);
@@ -72,8 +79,43 @@ void AUB_AICharacterBase::RoomExited()
 	OnRoomEntered.Broadcast(0.f, 0.f, 0.f);
 }
 
+float AUB_AICharacterBase::GetCurrentBladderLevel() const
+{
+	return BladderComponent->GetCurrentBladder();
+}
+
+float AUB_AICharacterBase::GetCurrentComfortLevel() const
+{
+	return ComfortComponent->GetCurrentComfort();
+}
+
+float AUB_AICharacterBase::GetCurrentEnergyLevel() const
+{
+	return EnergyComponent->GetCurrentEnergy();
+}
+
+float AUB_AICharacterBase::GetCurrentEnvironmentLevel() const
+{
+	return EnvironmentComponent->GetCurrentEnvironment();
+}
+
+float AUB_AICharacterBase::GetCurrentHungerLevel() const
+{
+	return HungerComponent->GetCurrentHunger();
+}
+
+float AUB_AICharacterBase::GetCurrentHygieneLevel() const
+{
+	return HygieneComponent->GetCurrentHygiene();
+}
+
+float AUB_AICharacterBase::GetCurrentSafetyLevel() const
+{
+	return SafetyComponent->GetCurrentSafety();
+}
+
 float AUB_AICharacterBase::GetCurrentThirstLevel() const
 {
-	return ThirstComponent->GetThirstLevel();
+	return ThirstComponent->GetCurrentThirst();
 }
 

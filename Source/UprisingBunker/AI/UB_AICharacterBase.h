@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include "UB_AICharacterBase.generated.h"
 
-enum class ENeeds;
-
 UENUM(Blueprintable) 
 enum class ECharacterTask : uint8
 {
@@ -60,6 +58,20 @@ enum class EMaritalStatus : uint8
 	EMS_Widowed		UMETA(DisplayName = "Widowed")
 };
 
+UENUM(BlueprintType)
+enum class ECharacterNeeds : uint8
+{
+	EN_None			UMETA(DisplayName = "None"),
+	EN_Bladder		UMETA(DisplayName = "Bladder"),
+	EN_Comfort		UMETA(DisplayName = "Comfort"),
+	EN_Energy		UMETA(DisplayName = "Energy"),
+	EN_Environment	UMETA(DisplayName = "Environment"),
+	EN_Hunger		UMETA(DisplayName = "Hunger"),
+	EN_Hygiene		UMETA(DisplayName = "Hygiene"),
+	EN_Safety		UMETA(DisplayName = "Safety"),
+	EN_Thirst		UMETA(DisplayName = "Thirst")
+};
+
 USTRUCT(BlueprintType)
 struct FCharacterInfo
 {
@@ -106,6 +118,7 @@ struct FCharacterInfo
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTaskChanged, ECharacterTask, NewTask);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStatusChanged, ECharacterStatus, NewStatus);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNeedChanged, ECharacterNeeds, NewNeed);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnRoomEntered, float, Safety, float, Environment, float, Health);
 
 UCLASS()
@@ -144,7 +157,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Needs")
 	class UEnvironmentComponent* EnvironmentComponent;
-
+	
 	// Information about this character
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Set Up")
 	FCharacterInfo CharacterInfo;
@@ -160,8 +173,13 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnTaskChanged OnTaskChanged;
 
+	// Called when the status of this character changes
 	UPROPERTY(BlueprintAssignable)
 	FOnStatusChanged OnStatusChanged;
+
+	// Called when the need of this character changes
+	UPROPERTY(BlueprintAssignable)
+	FOnNeedChanged OnNeedChanged;
 	
 	// Called when the character enters a new room
 	UPROPERTY(BlueprintAssignable)
@@ -170,15 +188,26 @@ public:
 	ECharacterTask GetCurrentTask() const { return CharacterTask;  }
 	void SetCurrentTask(const ECharacterTask NewTaskIn);
 
-	ECharacterStatus GetCurrentStatus() const { return CharacterStatus; }
+	ECharacterStatus GetCharacterStatus() const { return CharacterStatus; }
 	void SetCurrentStatus(const ECharacterStatus NewStatusIn);
+
+	ECharacterNeeds GetCurrentNeed() const { return CharacterNeeds; }
+	void SetCurrentNeed(const ECharacterNeeds NewNeedIn);
 
 	void RoomEntered(FText RoomName, FText RoomDescription, float Safety, float Environment, float Health, bool CharWorksHere);
 	void RoomExited();
 	
-	ECharacterStatus GetCharacterStatus() const { return CharacterStatus; }
+	
 
+	float GetCurrentBladderLevel() const;
+	float GetCurrentComfortLevel() const;
+	float GetCurrentEnergyLevel() const;
+	float GetCurrentEnvironmentLevel() const;
+	float GetCurrentHungerLevel() const;
+	float GetCurrentHygieneLevel() const;
+	float GetCurrentSafetyLevel() const;
 	float GetCurrentThirstLevel() const;
+	
 private:
 	// Current task of this character
 	UPROPERTY()
@@ -188,9 +217,13 @@ private:
 	UPROPERTY()
 	ECharacterStatus CharacterStatus;
 
+	// The needs of this character
+	UPROPERTY()
+	ECharacterNeeds CharacterNeeds;
+	
 	// Need that requires sorting
 	UPROPERTY()
-	ENeeds NeedToSort;
+	ECharacterNeeds NeedToSort;
 
 	float CurrentHealth;
 };
