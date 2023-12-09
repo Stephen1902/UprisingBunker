@@ -10,6 +10,8 @@ AUB_GameItemBase::AUB_GameItemBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	// Set this actor to only tick 20 times a second.  It will be casting on tick
+	PrimaryActorTick.TickInterval = 0.05f;
 
 	RootComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Root Comp"));
 	SetRootComponent(RootComp);
@@ -40,23 +42,23 @@ void AUB_GameItemBase::Tick(float DeltaTime)
 
 	if (InteractingChars.Num() > 0)
 	{
-		if (bAllowMultipleChars)
+		for (auto& InteractingChar : InteractingChars)
 		{
-			for (auto& IC : InteractingChars)
+			// Add the delta time to the current interacting time of this character
+			InteractingChar.Value += DeltaTime;
+			// Iterate through the needs that this item affects
+			for (const auto& ObjectNeed : ObjectNeeds)
 			{
-				IC.Value += DeltaTime;
-				for (const auto& IT : ObjectNeeds)
+				// Check if the time it takes for this object to complete is less than the time the character has been interacting
+				if (ObjectNeed.TimeToAmend <= InteractingChar.Value)
 				{
-					if (IT.TimeToAmend <= IC.Value)
-					{
-								
-					}
+					InteractingChar.Key->AmendCharacterNeed(ObjectNeed.NeedToAmend, ObjectNeed.AmountToAmend * DeltaTime);
+				}
+				else
+				{
+					InteractingChar.Key->ItemNeedHasFinished(ObjectNeed.NeedToAmend);
 				}
 			}
-		}
-		else
-		{
-			
 		}
 	}
 }
@@ -66,13 +68,10 @@ void AUB_GameItemBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	// Check what is being overlapped is an AI character
 	if (AUB_AICharacterBase* OverlappingChar = Cast<AUB_AICharacterBase>(OtherActor))
 	{
-		if (bAllowMultipleChars)
+		InteractingChar = OverlappingChar;
+		if (bAllowMultipleChars || InteractingChars.Num() == 0)
 		{
 			InteractingChars.Add(OverlappingChar, 0.0);
-		}
-		else
-		{
-			
 		}
 	}
 }

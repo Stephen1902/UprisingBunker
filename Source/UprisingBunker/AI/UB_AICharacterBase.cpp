@@ -119,3 +119,43 @@ float AUB_AICharacterBase::GetCurrentThirstLevel() const
 	return ThirstComponent->GetCurrentThirst();
 }
 
+void AUB_AICharacterBase::AmendCharacterNeed(const ECharacterNeeds NeedToAmend, const float Value) const
+{
+	if (NeedToAmend != ECharacterNeeds::EN_None && Value > 0.f)
+	{
+		switch (NeedToAmend)
+		{
+		case NeedToAmend == ECharacterNeeds::EN_Bladder:
+			BladderComponent->AlterBladder(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Comfort:
+			ComfortComponent->AlterComfort(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Energy:
+			EnergyComponent->AlterEnergy(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Environment:
+			EnvironmentComponent->AlterEnvironment(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Hunger:
+			HungerComponent->AlterHunger(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Hygiene:
+			HygieneComponent->AlterHygiene(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Safety:
+			SafetyComponent->AlterSafety(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_Thirst:
+			ThirstComponent->AlterThirst(Value);
+			break;
+		case NeedToAmend == ECharacterNeeds::EN_None:
+		default:
+			break;
+		}
+	}
+}
+
+void AUB_AICharacterBase::ItemNeedHasFinished(const ECharacterNeeds NeedToAmend)
+{
+}

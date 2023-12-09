@@ -196,8 +196,6 @@ public:
 
 	void RoomEntered(FText RoomName, FText RoomDescription, float Safety, float Environment, float Health, bool CharWorksHere);
 	void RoomExited();
-	
-	
 
 	float GetCurrentBladderLevel() const;
 	float GetCurrentComfortLevel() const;
@@ -207,7 +205,9 @@ public:
 	float GetCurrentHygieneLevel() const;
 	float GetCurrentSafetyLevel() const;
 	float GetCurrentThirstLevel() const;
-	
+
+	void AmendCharacterNeed(const ECharacterNeeds NeedToAmend, const float Value) const;
+	void ItemNeedHasFinished(const ECharacterNeeds NeedToAmend);
 private:
 	// Current task of this character
 	UPROPERTY()

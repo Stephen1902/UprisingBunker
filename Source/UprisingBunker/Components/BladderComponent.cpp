@@ -36,7 +36,7 @@ void UBladderComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	}
 }
 
-void UBladderComponent::AlterCurrentBladder(const float AlterAmount)
+void UBladderComponent::AlterBladder(const float AlterAmount)
 {
 	BladderNeeds.CurrentBladder = FMath::Clamp(BladderNeeds.CurrentBladder + AlterAmount, 0.f, BladderNeeds.MaxBladder);
 }

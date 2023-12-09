@@ -22,7 +22,7 @@ struct FObjectNeeds
 	float AmountToAmend;
 
 	// The time taken to amend when a character is interacting with it
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs", meta=(ClampMin=0.05f))
 	float TimeToAmend;
 
 	// Whether this item is to be destroyed when it is used ie a food object
@@ -43,15 +43,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Name to be displayed on screen
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
 	FText ItemName;
 
+	// Description the be displayed on screen
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
 	FText ItemDescription;
 
+	// How much this item costs when purchasing from purchasing from a vendor
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
 	float ItemCost;
 
+	// The Needs that this object alters 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
 	TArray<FObjectNeeds> ObjectNeeds;
 
@@ -78,4 +82,7 @@ private:
 
 	// Whether or not this actor can be interacted with by more than one character at a time
 	bool bAllowMultipleChars;
+
+	UPROPERTY()
+	AUB_AICharacterBase* InteractingChar;
 };
