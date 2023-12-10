@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "UprisingBunker/AI/UB_AICharacterBase.h"
 #include "UB_GameItemBase.generated.h"
 
 enum class ECharacterNeeds : uint8;
@@ -25,9 +26,12 @@ struct FObjectNeeds
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs", meta=(ClampMin=0.05f))
 	float TimeToAmend;
 
-	// Whether this item is to be destroyed when it is used ie a food object
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
-	bool bDestroyOnUse;
+	FObjectNeeds()
+	{
+		NeedToAmend = ECharacterNeeds::EN_None;
+		AmountToAmend = 5.0f;
+		TimeToAmend = 2.0f;
+	}
 };
 
 UCLASS()
@@ -59,6 +63,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
 	TArray<FObjectNeeds> ObjectNeeds;
 
+	// Whether or not this actor can be interacted with by more than one character at a time
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs")
+	bool bAllowMultipleChars;
+
+	// Whether this item is to be destroyed when it is used ie a food object
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Object Needs", meta=(EditCondition="!bAllowMultipleChars"))
+	bool bDestroyOnUse;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Items")
 	class UBoxComponent* RootComp;
 
@@ -79,10 +91,4 @@ private:
 	// The characters currently interacting with this actor and the time they have been interacting
 	UPROPERTY()
 	TMap<class AUB_AICharacterBase*, float> InteractingChars;
-
-	// Whether or not this actor can be interacted with by more than one character at a time
-	bool bAllowMultipleChars;
-
-	UPROPERTY()
-	AUB_AICharacterBase* InteractingChar;
 };

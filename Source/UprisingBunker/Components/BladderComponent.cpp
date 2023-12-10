@@ -65,6 +65,6 @@ void UBladderComponent::CalculateTickBladderChange(float DeltaTime)
 	ChangeThisTick *= DeltaTime;
 
 	// Change the bladder level calculated
-	AlterCurrentBladder(ChangeThisTick);
+	AlterBladder(ChangeThisTick);
 }
 

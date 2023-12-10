@@ -56,7 +56,7 @@ void AUB_GameItemBase::Tick(float DeltaTime)
 				}
 				else
 				{
-					InteractingChar.Key->ItemNeedHasFinished(ObjectNeed.NeedToAmend);
+					InteractingChar.Key->ItemNeedHasFinished();
 				}
 			}
 		}
@@ -68,7 +68,6 @@ void AUB_GameItemBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	// Check what is being overlapped is an AI character
 	if (AUB_AICharacterBase* OverlappingChar = Cast<AUB_AICharacterBase>(OtherActor))
 	{
-		InteractingChar = OverlappingChar;
 		if (bAllowMultipleChars || InteractingChars.Num() == 0)
 		{
 			InteractingChars.Add(OverlappingChar, 0.0);
@@ -78,6 +77,7 @@ void AUB_GameItemBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 void AUB_GameItemBase::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	// Check what is being overlapped is an AI character
 	if (const AUB_AICharacterBase* OverlappingChar = Cast<AUB_AICharacterBase>(OtherActor))
 	{
 		InteractingChars.Remove(OverlappingChar);

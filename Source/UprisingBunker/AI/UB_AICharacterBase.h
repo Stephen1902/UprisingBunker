@@ -206,8 +206,8 @@ public:
 	float GetCurrentSafetyLevel() const;
 	float GetCurrentThirstLevel() const;
 
-	void AmendCharacterNeed(const ECharacterNeeds NeedToAmend, const float Value) const;
-	void ItemNeedHasFinished(const ECharacterNeeds NeedToAmend);
+	void AmendCharacterNeed(ECharacterNeeds NeedToAmend, const float Value) const;
+	void ItemNeedHasFinished();
 private:
 	// Current task of this character
 	UPROPERTY()
@@ -226,4 +226,5 @@ private:
 	ECharacterNeeds NeedToSort;
 
 	float CurrentHealth;
+	bool bIsSortingNeed;
 };

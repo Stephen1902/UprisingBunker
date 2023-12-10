@@ -27,7 +27,7 @@ AUB_AICharacterBase::AUB_AICharacterBase()
 	EnvironmentComponent = CreateDefaultSubobject<UEnvironmentComponent>(TEXT("Environment Component"));
 
 	CurrentHealth = CharacterInfo.CharacterMaxHealth;
-	
+	bIsSortingNeed = false;
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +41,6 @@ void AUB_AICharacterBase::BeginPlay()
 void AUB_AICharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -66,6 +65,7 @@ void AUB_AICharacterBase::SetCurrentStatus(const ECharacterStatus NewStatusIn)
 void AUB_AICharacterBase::SetCurrentNeed(const ECharacterNeeds NewNeedIn)
 {
 	CharacterNeeds = NewNeedIn;
+	bIsSortingNeed = true;
 	OnNeedChanged.Broadcast(CharacterNeeds);
 }
 
@@ -119,43 +119,45 @@ float AUB_AICharacterBase::GetCurrentThirstLevel() const
 	return ThirstComponent->GetCurrentThirst();
 }
 
-void AUB_AICharacterBase::AmendCharacterNeed(const ECharacterNeeds NeedToAmend, const float Value) const
+void AUB_AICharacterBase::AmendCharacterNeed(ECharacterNeeds NeedToAmend, const float Value) const
 {
 	if (NeedToAmend != ECharacterNeeds::EN_None && Value > 0.f)
 	{
 		switch (NeedToAmend)
 		{
-		case NeedToAmend == ECharacterNeeds::EN_Bladder:
+		case ECharacterNeeds::EN_Bladder:
 			BladderComponent->AlterBladder(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Comfort:
+		case ECharacterNeeds::EN_Comfort:
 			ComfortComponent->AlterComfort(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Energy:
+		case ECharacterNeeds::EN_Energy:
 			EnergyComponent->AlterEnergy(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Environment:
+		case ECharacterNeeds::EN_Environment:
 			EnvironmentComponent->AlterEnvironment(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Hunger:
+		case ECharacterNeeds::EN_Hunger:
 			HungerComponent->AlterHunger(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Hygiene:
+		case ECharacterNeeds::EN_Hygiene:
 			HygieneComponent->AlterHygiene(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Safety:
+		case ECharacterNeeds::EN_Safety:
 			SafetyComponent->AlterSafety(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_Thirst:
+		case ECharacterNeeds::EN_Thirst:
 			ThirstComponent->AlterThirst(Value);
 			break;
-		case NeedToAmend == ECharacterNeeds::EN_None:
+		case ECharacterNeeds::EN_None:
 		default:
 			break;
 		}
 	}
 }
 
-void AUB_AICharacterBase::ItemNeedHasFinished(const ECharacterNeeds NeedToAmend)
+void AUB_AICharacterBase::ItemNeedHasFinished()
 {
+	CharacterNeeds = ECharacterNeeds::EN_None;
+	bIsSortingNeed = false;
 }
