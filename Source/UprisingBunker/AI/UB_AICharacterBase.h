@@ -209,6 +209,9 @@ public:
 	void AmendCharacterNeed(ECharacterNeeds NeedToAmend, const float Value) const;
 	void ItemNeedHasFinished();
 private:
+	// Check if a need is required to be sorted
+	void CheckCurrentNeeds();
+	
 	// Current task of this character
 	UPROPERTY()
 	ECharacterTask CharacterTask;
@@ -224,7 +227,7 @@ private:
 	// Need that requires sorting
 	UPROPERTY()
 	ECharacterNeeds NeedToSort;
-
+	
 	float CurrentHealth;
 	bool bIsSortingNeed;
 };

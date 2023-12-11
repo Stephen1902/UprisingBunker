@@ -77,10 +77,11 @@ public:
 	// Getters
 	FText GetBladderText() const { return BladderNeeds.BladderText; }
 	float GetCurrentBladder() const { return BladderNeeds.CurrentBladder; }
-
+	bool GetBladderNeedsSorting() const { return BladderNeeds.BladderFixValue < BladderNeeds.CurrentBladder; }
+	
 	// Setters
 	void AlterBladder(const float AlterAmount);
-
+	
 private:
 	void CalculateTickBladderChange(float DeltaTime);
 };

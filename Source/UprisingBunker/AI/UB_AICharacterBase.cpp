@@ -160,4 +160,15 @@ void AUB_AICharacterBase::ItemNeedHasFinished()
 {
 	CharacterNeeds = ECharacterNeeds::EN_None;
 	bIsSortingNeed = false;
+	CheckCurrentNeeds();
+}
+
+void AUB_AICharacterBase::CheckCurrentNeeds()
+{
+	// TODO Set up a system so that needs are sorted according to priority, not in order
+	
+	if (BladderComponent->GetBladderNeedsSorting())
+	{
+		SetCurrentNeed(ECharacterNeeds::EN_Bladder);
+	}
 }
